@@ -1,22 +1,21 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request
 import httpx
+import os
 
 app = FastAPI()
 
-TARGET_URL = "https://robotz-results-592303669867.southamerica-east1.run.app"  # Main backend
+BACKEND_URL = "https://robotz-results-592303669867.southamerica-east1.run.app"
 
-@app.api_route("/send_results/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
-async def proxy(full_path: str, request: Request):
+@app.api_route("/send_results/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+async def proxy(path: str, request: Request):
     method = request.method
-    # Strip the "/send_results/" prefix and forward to backend
-    url = f"{TARGET_URL}/{full_path}"
+    url = f"{BACKEND_URL}/{path}"  # only {path}, without "/send_results"
+
     headers = dict(request.headers)
     body = await request.body()
 
     async with httpx.AsyncClient() as client:
-        resp = await client.request(method, url, headers=headers, content=body)
-    
-    return {
-        "status_code": resp.status_code,
-        "content": resp.text
-    }
+        response = await client.request(method, url, headers=headers, content=body)
+
+    return response.json() if 'application/json' in response.headers.get('content-type', '') else response.text
+
