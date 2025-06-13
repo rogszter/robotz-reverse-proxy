@@ -1,0 +1,4 @@
+curl -X POST "https://api.robotz.com.br/send_results/record" ^
+-H "Content-Type: application/json" ^
+-H "x-api-key: 4e29b71b-4e11-4f79-8b39-96c7e07b23d8" ^
+-d "{\"application_name\": \"TestApp\", \"user_id\": 1, \"date\": \"2024-06-12\", \"date_identifier\": \"Z\", \"gross_result\": 100.0, \"net_result\": 99.0, \"gross_gain\": 120.0, \"gross_loss\": 20.0, \"gains\": 10, \"losses\": 2, \"bes\": 1}"
