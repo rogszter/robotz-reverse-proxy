@@ -14,6 +14,10 @@ app = FastAPI(title="Reverse Proxy Service")
 # Service mapping configuration
 SERVICE_MAPPING: Dict[str, str] = {
     "send_results": "https://robotz-results-592303669867.southamerica-east1.run.app",
+    # NEW MAPPINGS FOR GOOGLE APPS SCRIPTS
+    "instructions": "https://script.google.com/macros/s/AKfycbwroCVMllaJmL75b9B5j-td5oFWhleheKERQzmVQUGD9bOH04Ekpgttbr3MKrb7rIiM4A/exec",
+    "licenses": "https://script.google.com/macros/s/AKfycbyteIDtFzFMUSufnlfEU_nY1pvRuFvsXBMHMu7tSP26VLpmUBnl-fe2GiMqUcY83qhI/exec",
+    "telegram": "https://script.google.com/macros/s/AKfycbydN_gMIEkDHtFZGA8qGJCixj3ZVVQ7wJOfB2AOnfWaL51hacbM92Is6-ldwVmdlFrJYg/exec",
     # "serviceB": "https://secondExampleURL.com",
     # Add more services here as needed
     # "serviceC": "https://thirdExampleURL.com",
