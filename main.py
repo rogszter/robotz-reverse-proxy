@@ -59,8 +59,22 @@ async def reverse_proxy(service_name: str, path: str, request: Request):
         )
     
     # Get target URL
-    target_base_url = SERVICE_MAPPING[service_name]
-    target_url = f"{target_base_url}/{path}"
+    # target_base_url = SERVICE_MAPPING[service_name]
+    # target_url = f"{target_base_url}/{path}"
+
+    # Get target URL
+    target_base_url = SERVICE_MAPPING[service_name].rstrip('/')
+    
+    # --- FIX: Smarter URL construction to avoid unnecessary trailing slash ---
+    # Apps Scripts rely on the exact '/exec' endpoint for anonymous access.
+    if path:
+        # If there is a path (e.g., for 'send_results/report'), append it.
+        target_url = target_base_url + f"/{path}"
+    else:
+        # If the path is empty (e.g., for 'instructions'), use the base URL as is.
+        target_url = target_base_url
+    # -----------------------------------------------------------------------
+    
     
     # Add query parameters if they exist
     query_params = str(request.url.query)
