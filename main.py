@@ -39,17 +39,14 @@ async def health_check():
     """Health check endpoint for Cloud Run"""
     return {"status": "healthy", "services": list(SERVICE_MAPPING.keys())}
 
-@app.api_route("/{service_name}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"])
-async def reverse_proxy(service_name: str, path: str, request: Request):
-    """
-    Reverse proxy endpoint that forwards requests to the appropriate service
-    
-    Args:
-        service_name: The service identifier (e.g., "serviceA", "serviceB")
-        path: The remaining path to forward to the target service
-        request: The incoming FastAPI request object
-    """
-    
+# ------------------------------------------------------------------
+# DEDICATED APPS SCRIPT ROUTES (FIX for MetaTrader Redirect Issue)
+# These specific routes ensure POST/GET methods are handled without redirection
+# as the path is explicitly defined without a trailing slash issue.
+# ------------------------------------------------------------------
+
+# Generic proxy function reused by the specific routes
+async def generic_proxy(service_name: str, request: Request, path: str = ""):
     # Check if service exists in mapping
     if service_name not in SERVICE_MAPPING:
         logger.warning(f"Service not found: {service_name}")
@@ -58,24 +55,13 @@ async def reverse_proxy(service_name: str, path: str, request: Request):
             detail=f"Service '{service_name}' not found. Available services: {list(SERVICE_MAPPING.keys())}"
         )
     
-    # Get target URL
-    # target_base_url = SERVICE_MAPPING[service_name]
-    # target_url = f"{target_base_url}/{path}"
-
-    # Get target URL
     target_base_url = SERVICE_MAPPING[service_name].rstrip('/')
     
-    # --- FIX: Smarter URL construction to avoid unnecessary trailing slash ---
-    # Apps Scripts rely on the exact '/exec' endpoint for anonymous access.
+    # Smarter URL construction: Append path only if present
+    target_url = target_base_url
     if path:
-        # If there is a path (e.g., for 'send_results/report'), append it.
         target_url = target_base_url + f"/{path}"
-    else:
-        # If the path is empty (e.g., for 'instructions'), use the base URL as is.
-        target_url = target_base_url
-    # -----------------------------------------------------------------------
-    
-    
+
     # Add query parameters if they exist
     query_params = str(request.url.query)
     if query_params:
@@ -113,7 +99,7 @@ async def reverse_proxy(service_name: str, path: str, request: Request):
             if key.lower() not in excluded_headers
         }
         
-        # Return streaming response to handle large responses efficiently
+        # Return streaming response
         async def generate():
             async for chunk in response.aiter_bytes():
                 yield chunk
