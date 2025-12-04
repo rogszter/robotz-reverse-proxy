@@ -137,6 +137,25 @@ async def reverse_proxy(service_name: str, path: str, request: Request):
         logger.error(f"Unexpected error when proxying to {target_url}: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+
+@app.api_route("/instructions", methods=["GET", "POST"])
+async def proxy_instructions(request: Request):
+    return await generic_proxy("instructions", request)
+
+@app.api_route("/licenses", methods=["GET", "POST"])
+async def proxy_licenses(request: Request):
+    return await generic_proxy("licenses", request)
+
+@app.api_route("/telegram", methods=["GET", "POST"])
+async def proxy_telegram(request: Request):
+    return await generic_proxy("telegram", request)
+
+# FALLBACK GENERIC ROUTE (Only used if the above specific routes don't match)
+@app.api_route("/{service_name}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"])
+async def reverse_proxy_generic(service_name: str, path: str, request: Request):
+    return await generic_proxy(service_name, request, path)
+# ------------------------------------------------------------------
+
 @app.get("/")
 async def root():
     """Root endpoint showing available services"""
