@@ -18,6 +18,7 @@ SERVICE_MAPPING: Dict[str, str] = {
     "instructions": "https://script.google.com/macros/s/AKfycbwroCVMllaJmL75b9B5j-td5oFWhleheKERQzmVQUGD9bOH04Ekpgttbr3MKrb7rIiM4A/exec",
     "licenses": "https://script.google.com/macros/s/AKfycbyteIDtFzFMUSufnlfEU_nY1pvRuFvsXBMHMu7tSP26VLpmUBnl-fe2GiMqUcY83qhI/exec",
     "telegram": "https://script.google.com/macros/s/AKfycbydN_gMIEkDHtFZGA8qGJCixj3ZVVQ7wJOfB2AOnfWaL51hacbM92Is6-ldwVmdlFrJYg/exec",
+    "results": "https://script.google.com/macros/s/AKfycbxtLIJAK1c-oHIPf-jh8i1czm7qXVGskw4ymkDURF0kBxzbmYWlJeTNuRe2W065lki6rw/exec",
     # "serviceB": "https://secondExampleURL.com",
     # Add more services here as needed
     # "serviceC": "https://thirdExampleURL.com",
@@ -135,6 +136,10 @@ async def proxy_licenses(request: Request):
 @app.api_route("/telegram", methods=["GET", "POST"])
 async def proxy_telegram(request: Request):
     return await generic_proxy("telegram", request)
+
+@app.api_route("/results", methods=["GET", "POST"])
+async def proxy_telegram(request: Request):
+    return await generic_proxy("results", request)
 
 # FALLBACK GENERIC ROUTE (Only used if the above specific routes don't match)
 @app.api_route("/{service_name}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"])
