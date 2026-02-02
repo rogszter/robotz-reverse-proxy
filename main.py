@@ -140,11 +140,11 @@ async def proxy_telegram(request: Request):
     return await generic_proxy("telegram", request)
 
 @app.api_route("/results", methods=["GET", "POST"])
-async def proxy_telegram(request: Request):
+async def proxy_results(request: Request):
     return await generic_proxy("results", request)
 
 @app.api_route("/send_bt", methods=["GET", "POST"])
-async def proxy_telegram(request: Request):
+async def proxy_send_bt(request: Request):
     return await generic_proxy("send_bt", request)
 
 # FALLBACK GENERIC ROUTE (Only used if the above specific routes don't match)
