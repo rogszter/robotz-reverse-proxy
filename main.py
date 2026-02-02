@@ -20,6 +20,7 @@ SERVICE_MAPPING: Dict[str, str] = {
     "licenses": "https://script.google.com/macros/s/AKfycbyteIDtFzFMUSufnlfEU_nY1pvRuFvsXBMHMu7tSP26VLpmUBnl-fe2GiMqUcY83qhI/exec",
     "telegram": "https://script.google.com/macros/s/AKfycbydN_gMIEkDHtFZGA8qGJCixj3ZVVQ7wJOfB2AOnfWaL51hacbM92Is6-ldwVmdlFrJYg/exec",
     "results": "https://script.google.com/macros/s/AKfycbxtLIJAK1c-oHIPf-jh8i1czm7qXVGskw4ymkDURF0kBxzbmYWlJeTNuRe2W065lki6rw/exec",
+    "send_bt": "https://script.google.com/macros/s/AKfycbxD2NGrGvApzTSL_5KBHbfBMhRGiU5mCw-qovOQ1P90J8AMgTrfwn8YEJZ8SIs8NfwA/exec",
     # "serviceB": "https://secondExampleURL.com",
     # Add more services here as needed
     # "serviceC": "https://thirdExampleURL.com",
